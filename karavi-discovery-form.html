@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Karavi — Discovery Questionnaire</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --sand: #f5f0e8;
+    --linen: #ede8dd;
+    --clay: #c9a97a;
+    --umber: #7a5c3a;
+    --ink: #1e1a15;
+    --smoke: #9a9086;
+    --border: #ddd6c8;
+    --focus: #c9a97a;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--sand);
+    color: var(--ink);
+    font-family: 'DM Mono', monospace;
+    font-weight: 300;
+    font-size: 13px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* HERO */
+  .hero {
+    background: var(--ink);
+    color: var(--sand);
+    padding: 72px 48px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -60px;
+    width: 320px; height: 320px;
+    border-radius: 50%;
+    border: 1px solid rgba(201,169,122,0.15);
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; right: 60px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    border: 1px solid rgba(201,169,122,0.1);
+  }
+
+  .hero-label {
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--clay);
+    margin-bottom: 24px;
+    display: block;
+  }
+
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(36px, 6vw, 64px);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    margin-bottom: 20px;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--clay);
+  }
+
+  .hero-sub {
+    color: var(--smoke);
+    font-size: 12px;
+    max-width: 480px;
+    line-height: 1.8;
+  }
+
+  /* PROGRESS */
+  .progress-bar {
+    background: var(--linen);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 48px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .progress-track {
+    flex: 1;
+    height: 2px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--clay);
+    width: 0%;
+    transition: width 0.4s ease;
+    border-radius: 2px;
+  }
+
+  .progress-label {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--smoke);
+    white-space: nowrap;
+  }
+
+  /* MAIN */
+  .container {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 60px 48px 120px;
+  }
+
+  /* SECTION */
+  .section {
+    margin-bottom: 64px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.5s ease forwards;
+  }
+
+  .section:nth-child(1) { animation-delay: 0.05s; }
+  .section:nth-child(2) { animation-delay: 0.10s; }
+  .section:nth-child(3) { animation-delay: 0.15s; }
+  .section:nth-child(4) { animation-delay: 0.20s; }
+  .section:nth-child(5) { animation-delay: 0.25s; }
+  .section:nth-child(6) { animation-delay: 0.30s; }
+  .section:nth-child(7) { animation-delay: 0.35s; }
+  .section:nth-child(8) { animation-delay: 0.40s; }
+  .section:nth-child(9) { animation-delay: 0.45s; }
+
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 32px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 48px;
+    font-weight: 300;
+    color: var(--border);
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--umber);
+    letter-spacing: 0.02em;
+  }
+
+  /* FIELD */
+  .field {
+    margin-bottom: 36px;
+  }
+
+  .field-label {
+    display: block;
+    font-size: 11.5px;
+    color: var(--ink);
+    margin-bottom: 10px;
+    line-height: 1.6;
+  }
+
+  .field-hint {
+    display: block;
+    font-size: 10.5px;
+    color: var(--smoke);
+    margin-top: 4px;
+    font-style: italic;
+  }
+
+  textarea, input[type="text"], input[type="number"], select {
+    width: 100%;
+    background: var(--linen);
+    border: 1px solid var(--border);
+    border-radius: 0;
+    padding: 12px 14px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12.5px;
+    font-weight: 300;
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+
+  textarea { resize: vertical; min-height: 80px; }
+
+  textarea:focus, input[type="text"]:focus, input[type="number"]:focus, select:focus {
+    border-color: var(--clay);
+    background: #faf7f2;
+  }
+
+  select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239a9086' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 36px;
+    cursor: pointer;
+  }
+
+  /* RADIO / CHECKBOX */
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 4px;
+  }
+
+  .options.inline {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .opt {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: var(--linen);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    user-select: none;
+    font-size: 12px;
+  }
+
+  .opt:hover { border-color: var(--clay); background: #faf7f2; }
+
+  .opt input { display: none; }
+
+  .opt-box {
+    width: 14px; height: 14px;
+    border: 1px solid var(--border);
+    flex-shrink: 0;
+    position: relative;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .opt.radio .opt-box { border-radius: 50%; }
+
+  .opt input:checked ~ .opt-box {
+    background: var(--clay);
+    border-color: var(--clay);
+  }
+
+  .opt input:checked ~ .opt-box::after {
+    content: '';
+    position: absolute;
+    inset: 3px;
+    background: var(--sand);
+    border-radius: inherit;
+  }
+
+  .opt input:checked ~ span { color: var(--umber); }
+
+  .opt.radio.selected,
+  .opt.check.selected {
+    border-color: var(--clay);
+    background: #faf7f2;
+  }
+
+  /* RANGE SLIDER */
+  .range-wrap { margin-top: 8px; }
+
+  .range-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: var(--smoke);
+    margin-bottom: 6px;
+  }
+
+  input[type="range"] {
+    width: 100%;
+    height: 2px;
+    background: var(--border);
+    outline: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+    border-radius: 0;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px; height: 16px;
+    background: var(--clay);
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  .range-value {
+    text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px;
+    color: var(--umber);
+    margin-top: 8px;
+  }
+
+  /* SUBMIT */
+  .submit-zone {
+    background: var(--ink);
+    padding: 48px;
+    margin-top: 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .submit-zone::before {
+    content: '';
+    position: absolute;
+    top: -30px; left: -30px;
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    border: 1px solid rgba(201,169,122,0.1);
+  }
+
+  .submit-zone p {
+    color: var(--smoke);
+    font-size: 11px;
+    margin-bottom: 28px;
+    line-height: 1.8;
+  }
+
+  .btn-submit {
+    background: var(--clay);
+    color: var(--ink);
+    border: none;
+    padding: 16px 48px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    font-weight: 400;
+  }
+
+  .btn-submit:hover { background: #d4b48a; }
+  .btn-submit:active { transform: scale(0.98); }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 32px; right: 32px;
+    background: var(--umber);
+    color: var(--sand);
+    padding: 14px 24px;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.3s, transform 0.3s;
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  .toast.show { opacity: 1; transform: translateY(0); }
+
+  /* DIVIDER */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0 0 36px;
+  }
+
+  @media (max-width: 600px) {
+    .hero, .container { padding-left: 24px; padding-right: 24px; }
+    .progress-bar { padding: 12px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <span class="hero-label">Karavi · Strictly Confidential</span>
+  <h1>Karavi —<br><em>Business Discovery</em></h1>
+  <p class="hero-sub">
+    This questionnaire helps us understand your vision, operations, and growth trajectory — so we can build something that scales with you, not just for today.
+  </p>
+</div>
+
+<div class="progress-bar">
+  <span class="progress-label">Progress</span>
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  <span class="progress-label" id="progressText">0 / 35</span>
+</div>
+
+<div class="container">
+
+  <!-- 1. BUSINESS MODEL -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <span class="section-title">Business Model & Revenue</span>
+    </div>
+
+    <div class="field">
+      <label class="field-label">In 3–5 years, what % of revenue should come from B2B (designers, retailers) vs. direct-to-consumer?
+        <span class="field-hint">Drag to set B2B %. Remainder will be DTC.</span>
+      </label>
+      <div class="range-wrap">
+        <div class="range-labels"><span>0% B2B</span><span>100% B2B</span></div>
+        <input type="range" min="0" max="100" value="30" id="b2bSlider" oninput="updateSlider(this, 'b2bVal')">
+        <div class="range-value" id="b2bVal">B2B 30% · DTC 70%</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Are subscriptions or recurring revenue models on the roadmap? (e.g., a "Linen Box" monthly)</label>
+      <div class="options inline">
+        <label class="opt radio"><input type="radio" name="subscriptions" value="Yes, planned"><div class="opt-box"></div><span>Yes, planned</span></label>
+        <label class="opt radio"><input type="radio" name="subscriptions" value="Maybe later"><div class="opt-box"></div><span>Maybe later</span></label>
+        <label class="opt radio"><input type="radio" name="subscriptions" value="Not likely"><div class="opt-box"></div><span>Not likely</span></label>
+      </div>
+      <input type="text" placeholder="Any thoughts on this..." style="margin-top:8px">
+    </div>
+
+    <div class="field">
+      <label class="field-label">Do you plan to sell to businesses at wholesale prices, or only to consumers?</label>
+      <div class="options inline">
+        <label class="opt radio"><input type="radio" name="wholesale" value="Wholesale B2B"><div class="opt-box"></div><span>Wholesale B2B</span></label>
+        <label class="opt radio"><input type="radio" name="wholesale" value="Consumer only"><div class="opt-box"></div><span>Consumer only</span></label>
+        <label class="opt radio"><input type="radio" name="wholesale" value="Both"><div class="opt-box"></div><span>Both</span></label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Will you offer customization or personalization? (monograms, custom colors, special sizes)</label>
+      <div class="options">
+        <label class="opt check"><input type="checkbox" value="Monograms"><div class="opt-box"></div><span>Monograms / embroidery</span></label>
+        <label class="opt check"><input type="checkbox" value="Custom colors"><div class="opt-box"></div><span>Custom colors / dyes</span></label>
+        <label class="opt check"><input type="checkbox" value="Special sizes"><div class="opt-box"></div><span>Special / non-standard sizes</span></label>
+        <label class="opt check"><input type="checkbox" value="None"><div class="opt-box"></div><span>Not planning to offer customization</span></label>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. GEOGRAPHY -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <span class="section-title">Geography & Markets</span>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Beyond India, which countries or regions matter most to you?
+        <span class="field-hint">Select all that apply.</span>
+      </label>
+      <div class="options">
+        <label class="opt check"><input type="checkbox" value="US"><div class="opt-box"></div><span>United States</span></label>
+        <label class="opt check"><input type="checkbox" value="EU"><div class="opt-box"></div><span>European Union</span></label>
+        <label class="opt check"><input type="checkbox" value="UAE"><div class="opt-box"></div><span>UAE / Middle East</span></label>
+        <label class="opt check"><input type="checkbox" value="Singapore"><div class="opt-box"></div><span>Singapore / Southeast Asia</span></label>
+        <label class="opt check"><input type="checkbox" value="UK"><div class="opt-box"></div><span>United Kingdom</span></label>
+        <label class="opt check"><input type="checkbox" value="Australia"><div class="opt-box"></div><span>Australia / New Zealand</span></label>
+      </div>
+      <input type="text" placeholder="Any others..." style="margin-top:8px">
+    </div>
+
+    <div class="field">
+      <label class="field-label">Will you have different shipping tiers by region, or flat rates?</label>
+      <div class="options inline">
+        <label class="opt radio"><input type="radio" name="shipping" value="Tiered by region"><div class="opt-box"></div><span>Tiered by region</span></label>
+        <label class="opt radio"><input type="radio" name="shipping" value="Flat rate globally"><div class="opt-box"></div><span>Flat rate globally</span></label>
+        <label class="opt radio"><input type="radio" name="shipping" value="Not decided"><div class="opt-box"></div><span>Not decided yet</span></label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Do you need multi-language support?</label>
+      <div class="options inline">
+        <label class="opt radio"><input type="radio" name="language" value="English only"><div class="opt-box"></div><span>English only (for now)</span></label>
+        <label class="opt radio"><input type="radio" name="language" value="Hindi too"><div class="opt-box"></div><span>English + Hindi</span></label>
+        <label class="opt radio"><input type="radio" name="language" value="Others too"><div class="opt-box"></div><span>Others too — specify below</span></label>
+      </div>
+      <input type="text" placeholder="Languages needed..." style="margin-top:8px">
+    </div>
+
+    <div class="field">
+      <label class="field-label">Will you have different pricing per region, or just USD conversion?</label>
+      <div class="options inline">
+        <label class="opt radio"><input type="radio" name="pricing_region" value="USD only"><div class="opt-box"></div><span>USD only</span></label>
+        <label class="opt radio"><input type="radio" name="pricing_region" value="Local pricing"><div class="opt-box"></div><span>True local pricing per region</span></label>
+        <label class="opt radio"><input type="radio" name="pricing_region" value="Not sure"><div class="opt-box"></div><span>Not sure yet</span></label>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. PRODUCT EXPANSION -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <span class="section-title">Product Expansion</span>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Will you add new categories beyond Bedding, Rugs, and Cushions?
+        <span class="field-hint">Select any categories you're considering.</span>
+      </label>
+      <div class="options">
+        <label class="opt check"><input type="checkbox" value="Furniture"><div class="opt-box"></div><span>Furniture</span></label>
+        <label class="opt check"><input type="checkbox" value="Kitchenware"><div class="opt-box"></div><span>Kitchenware / tabletop</span></label>
+        <label class="opt check"><input type="checkbox" value="Apparel"><div class="opt-box"></div><span>Apparel / garments</span></label>
+        <label class="opt check"><input type="checkbox" value="Bath"><div class="opt-box"></div><span>Bath & spa</span></label>
+        <label class="opt check"><input type="checkbox" value="None"><div class="opt-box"></div><span>Staying focused for now</span></label>
+      </div>
+      <input type="text" placeholder="Other categories in mind..." style="margin-top:8px">
+    </div>
+
+    <div class="field">
+      <label class="field-label">Do product variants matter? (color, material, finish, size options)</label>
+      <div class="options inline">
+        <label class="opt radio"><input type="radio" name="variants" value="Yes, complex"><div class="opt-box"></div><span>Yes — complex variants</span></label>
+        <label class="opt radio"><input type="radio" name="variants" value="Yes, simple"><div class="opt-box"></div><span>Yes — just sizes/colors</span></label>
+        <label class="opt radio"><input type="radio" name="variants" value="No"><div class="opt-box"></div><span>No — one version per SKU</span></label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">How many SKUs do you expect in 2 years?
+        <span class="field-hint">You currently have ~12.</span>
+      </label>
+      <select>
+        <option value="">— Select a range —</option>
+        <option>Under 30</option>
+        <option>30–75</option>
+        <option>75–150</option>
+        <option>150–300</option>
+        <option>300+</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Will makers or artisans be selectable per order? (e.g., "I want this woven by Hussain")</label>
+      <div class="options inline">
+        <label class="opt radio"><input type="radio" name="artisan" value="Yes, core feature"><div class="opt-box"></div><span>Yes — core feature</span></label>
+        <label class="opt radio"><input type="radio" name="artisan" value="Maybe later"><div class="opt-box"></div><span>Maybe later</span></label>
+        <label class="opt radio"><input type="radio" name="artisan" value="No"><div class="opt-box"></div><span>No</span></label>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. CUSTOMER EXPERIENCE -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <span class="section-title">Customer Experience</span>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Should customer accounts be optional (guest checkout) or required?</label>
+      <div class="options inline">
+        <label class="opt radio"><input type="radio" name="accounts" value="Optional"><div class="opt-box"></div><span>Optional (guest checkout)</span></label>
+        <label class="opt radio"><input type="radio" name="accounts" value="Required"><div class="opt-box"></div><span>Required</span></label>
+        <label class="opt radio"><input type="radio" name="accounts" value="Encouraged"><div class="opt-box"></div><span>Optional but encouraged</span></label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Should customers see reviews, ratings, and maker stories on each product?</label>
+      <div class="options">
+        <label class="opt check"><input type="checkbox" value="Reviews"><div class="opt-box"></div><span>Customer reviews & ratings</span></label>
+        <label class="opt check"><input type="checkbox" value="Maker stories"><div class="opt-box"></div><span>Maker / artisan stories</span></label>
+        <label class="opt check"><input type="checkbox" value="Neither"><div class="opt-box"></div><span>Neither for now</span></label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Will you support pre-orders or backorders for out-of-stock items?</label>
+      <div class="options inline">
+        <label class="opt radio"><input type="radio" name="preorder" value="Yes"><div class="opt-box"></div><span>Yes</span></label>
+        <label class="opt radio"><input type="radio" name="preorder" value="No"><div class="opt-box"></div><span>No</span></label>
+        <label class="opt radio"><input type="radio" name="preorder" value="Maybe later"><div class="opt-box"></div><span>Maybe later</span></label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Do you want a loyalty or rewards program later?</label>
+      <div class="options inline">
+        <label class="opt radio"><input type="radio" name="loyalty" value="Yes, high priority"><div class="opt-box"></div><span>Yes — high priority</span></label>
+        <label class="opt radio"><input type="radio" name="loyalty" value="Nice to have"><div class="opt-box"></div><span>Nice to have</span></label>
+        <label class="opt radio"><input type="radio" name="loyalty" value="Not interested"><div class="opt-box"></div><span>Not interested</span></label>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. TEAM & OPERATIONS -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <span class="section-title">Team & Operations</span>
+    </div>
+
+    <div class="field">
+      <label class="field-label">How many people might manage orders, inventory, and customer service in 2 years?</label>
+      <select>
+        <option value="">— Select —</option>
+        <option>Just me / 1 person</option>
+        <option>2–3 people</option>
+        <option>4–8 people</option>
+        <option>8–15 people</option>
+        <option>15+</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Will there be different roles accessing the platform?
+        <span class="field-hint">Select all you anticipate needing.</span>
+      </label>
+      <div class="options">
+        <label class="opt check"><input type="checkbox" value="Content editor"><div class="opt-box"></div><span>Content editor (product descriptions, blog)</span></label>
+        <label class="opt check"><input type="checkbox" value="Fulfillment"><div class="opt-box"></div><span>Fulfillment / warehouse manager</span></label>
+        <label class="opt check"><input type="checkbox" value="Accountant"><div class="opt-box"></div><span>Accountant / finance</span></label>
+        <label class="opt check"><input type="checkbox" value="CS"><div class="opt-box"></div><span>Customer service</span></label>
+        <label class="opt check"><input type="checkbox" value="Admin"><div class="opt-box"></div><span>Admin / owner (full access)</span></label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Do you need inventory forecasting tools, or just manual stock counts?</label>
+      <div class="options inline">
+        <label class="opt radio"><input type="radio" name="inventory" value="Manual"><div class="opt-box"></div><span>Manual is fine</span></label>
+        <label class="opt radio"><input type="radio" name="inventory" value="Forecasting"><div class="opt-box"></div><span>Need forecasting tools</span></label>
+        <label class="opt radio"><input type="radio" name="inventory" value="Later"><div class="opt-box"></div><span>Manual now, forecasting later</span></label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Will orders sync with an external fulfillment center or logistics partner?</label>
+      <div class="options inline">
+        <label class="opt radio"><input type="radio" name="fulfillment" value="Yes"><div class="opt-box"></div><span>Yes — specify below</span></label>
+        <label class="opt radio"><input type="radio" name="fulfillment" value="No"><div class="opt-box"></div><span>No — in-house</span></label>
+        <label class="opt radio"><input type="radio" name="fulfillment" value="TBD"><div class="opt-box"></div><span>Not decided</span></label>
+      </div>
+      <input type="text" placeholder="Logistics partner name, if known..." style="margin-top:8px">
+    </div>
+  </div>
+
+  <!-- 6. BRAND & CONTENT -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">06</span>
+      <span class="section-title">Brand & Content</span>
+    </div>
+
+    <div class="field">
+      <label class="field-label">How important is storytelling to your brand? (blog, maker profiles, behind-the-scenes)</label>
+      <div class="options inline">
+        <label class="opt radio"><input type="radio" name="storytelling" value="Core to brand"><div class="opt-box"></div><span>Core — it's the brand</span></label>
+        <label class="opt radio"><input type="radio" name="storytelling" value="Important"><div class="opt-box"></div><span>Important but not primary</span></label>
+        <label class="opt radio"><input type="radio" name="storytelling" value="Product first"><div class="opt-box"></div><span>Product-first, minimal content</span></label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Will you build a content/community hub, or keep focus strictly on product sales?</label>
+      <div class="options inline">
+        <label class="opt radio"><input type="radio" name="community" value="Full content hub"><div class="opt-box"></div><span>Full content hub</span></label>
+        <label class="opt radio"><input type="radio" name="community" value="Minimal blog"><div class="opt-box"></div><span>Minimal blog / journal</span></label>
+        <label class="opt radio"><input type="radio" name="community" value="Products only"><div class="opt-box"></div><span>Products only</span></label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Do you want user-generated content features? (customer photos, testimonials)</label>
+      <div class="options inline">
+        <label class="opt radio"><input type="radio" name="ugc" value="Yes"><div class="opt-box"></div><span>Yes</span></label>
+        <label class="opt radio"><input type="radio" name="ugc" value="Maybe later"><div class="opt-box"></div><span>Maybe later</span></label>
+        <label class="opt radio"><input type="radio" name="ugc" value="No"><div class="opt-box"></div><span>No</span></label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Will you run a brand ambassador or influencer program?</label>
+      <div class="options inline">
+        <label class="opt radio"><input type="radio" name="ambassador" value="Yes, planned"><div class="opt-box"></div><span>Yes — planned</span></label>
+        <label class="opt radio"><input type="radio" name="ambassador" value="Maybe later"><div class="opt-box"></div><span>Maybe later</span></label>
+        <label class="opt radio"><input type="radio" name="ambassador" value="No"><div class="opt-box"></div><span>No</span></label>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. TECHNOLOGY -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">07</span>
+      <span class="section-title">Technology & Integrations</span>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Do you need to integrate with accounting software? (GST invoicing, etc.)</label>
+      <div class="options">
+        <label class="opt check"><input type="checkbox" value="Tally"><div class="opt-box"></div><span>Tally</span></label>
+        <label class="opt check"><input type="checkbox" value="QuickBooks"><div class="opt-box"></div><span>QuickBooks</span></label>
+        <label class="opt check"><input type="checkbox" value="Zoho Books"><div class="opt-box"></div><span>Zoho Books</span></label>
+        <label class="opt check"><input type="checkbox" value="Not yet"><div class="opt-box"></div><span>Not needed yet</span></label>
+      </div>
+      <input type="text" placeholder="Other software in use..." style="margin-top:8px">
+    </div>
+
+    <div class="field">
+      <label class="field-label">Which email marketing platform will you use?</label>
+      <div class="options">
+        <label class="opt radio"><input type="radio" name="email_platform" value="Klaviyo"><div class="opt-box"></div><span>Klaviyo</span></label>
+        <label class="opt radio"><input type="radio" name="email_platform" value="Mailchimp"><div class="opt-box"></div><span>Mailchimp</span></label>
+        <label class="opt radio"><input type="radio" name="email_platform" value="Transactional only"><div class="opt-box"></div><span>Transactional emails only</span></label>
+        <label class="opt radio"><input type="radio" name="email_platform" value="Not decided"><div class="opt-box"></div><span>Not decided yet</span></label>
+      </div>
+      <input type="text" placeholder="Other platform..." style="margin-top:8px">
+    </div>
+
+    <div class="field">
+      <label class="field-label">Do you need SMS notifications for order status updates?</label>
+      <div class="options inline">
+        <label class="opt radio"><input type="radio" name="sms" value="Yes"><div class="opt-box"></div><span>Yes</span></label>
+        <label class="opt radio"><input type="radio" name="sms" value="Maybe later"><div class="opt-box"></div><span>Maybe later</span></label>
+        <label class="opt radio"><input type="radio" name="sms" value="No"><div class="opt-box"></div><span>No</span></label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Will you track detailed analytics? (cohort analysis, LTV, CAC)</label>
+      <div class="options inline">
+        <label class="opt radio"><input type="radio" name="analytics" value="Yes, from day one"><div class="opt-box"></div><span>Yes — from day one</span></label>
+        <label class="opt radio"><input type="radio" name="analytics" value="Later"><div class="opt-box"></div><span>Basic now, detailed later</span></label>
+        <label class="opt radio"><input type="radio" name="analytics" value="Basic only"><div class="opt-box"></div><span>Basic GA / Shopify only</span></label>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. FINANCIAL & LEGAL -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">08</span>
+      <span class="section-title">Financial & Legal</span>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Which tax regimes apply to your business?</label>
+      <div class="options">
+        <label class="opt check"><input type="checkbox" value="GST India"><div class="opt-box"></div><span>GST (India)</span></label>
+        <label class="opt check"><input type="checkbox" value="VAT EU"><div class="opt-box"></div><span>VAT (EU)</span></label>
+        <label class="opt check"><input type="checkbox" value="VAT UK"><div class="opt-box"></div><span>VAT (UK)</span></label>
+        <label class="opt check"><input type="checkbox" value="US Sales Tax"><div class="opt-box"></div><span>US Sales Tax</span></label>
+        <label class="opt check"><input type="checkbox" value="Not sure"><div class="opt-box"></div><span>Not sure — need guidance</span></label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Do you need to support B2B quotes and custom pricing per buyer?</label>
+      <div class="options inline">
+        <label class="opt radio"><input type="radio" name="b2b_pricing" value="Yes"><div class="opt-box"></div><span>Yes</span></label>
+        <label class="opt radio"><input type="radio" name="b2b_pricing" value="Maybe later"><div class="opt-box"></div><span>Maybe later</span></label>
+        <label class="opt radio"><input type="radio" name="b2b_pricing" value="No"><div class="opt-box"></div><span>No</span></label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Will you offer installment payments? (EMI, Buy Now Pay Later)</label>
+      <div class="options inline">
+        <label class="opt radio"><input type="radio" name="bnpl" value="Yes"><div class="opt-box"></div><span>Yes</span></label>
+        <label class="opt radio"><input type="radio" name="bnpl" value="Maybe later"><div class="opt-box"></div><span>Maybe later</span></label>
+        <label class="opt radio"><input type="radio" name="bnpl" value="No"><div class="opt-box"></div><span>No</span></label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Do you need an affiliate or referral program?</label>
+      <div class="options inline">
+        <label class="opt radio"><input type="radio" name="affiliate" value="Yes, planned"><div class="opt-box"></div><span>Yes — planned</span></label>
+        <label class="opt radio"><input type="radio" name="affiliate" value="Maybe later"><div class="opt-box"></div><span>Maybe later</span></label>
+        <label class="opt radio"><input type="radio" name="affiliate" value="No"><div class="opt-box"></div><span>No</span></label>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. COMPETITIVE & MARKET -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">09</span>
+      <span class="section-title">Competitive & Market</span>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Will you sell on marketplaces in addition to your own site?</label>
+      <div class="options">
+        <label class="opt check"><input type="checkbox" value="Amazon India"><div class="opt-box"></div><span>Amazon India</span></label>
+        <label class="opt check"><input type="checkbox" value="Amazon Global"><div class="opt-box"></div><span>Amazon Global</span></label>
+        <label class="opt check"><input type="checkbox" value="Flipkart"><div class="opt-box"></div><span>Flipkart</span></label>
+        <label class="opt check"><input type="checkbox" value="Etsy"><div class="opt-box"></div><span>Etsy</span></label>
+        <label class="opt check"><input type="checkbox" value="Own site only"><div class="opt-box"></div><span>Own site only — no marketplaces</span></label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Do you need a wholesale catalog or separate wholesale ordering flow?</label>
+      <div class="options inline">
+        <label class="opt radio"><input type="radio" name="wholesale_catalog" value="Yes"><div class="opt-box"></div><span>Yes</span></label>
+        <label class="opt radio"><input type="radio" name="wholesale_catalog" value="Maybe later"><div class="opt-box"></div><span>Maybe later</span></label>
+        <label class="opt radio"><input type="radio" name="wholesale_catalog" value="No"><div class="opt-box"></div><span>No</span></label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Are there seasonal patterns to plan for?
+        <span class="field-hint">When do you typically see peak orders?</span>
+      </label>
+      <div class="options">
+        <label class="opt check"><input type="checkbox" value="Diwali"><div class="opt-box"></div><span>Diwali / festive season</span></label>
+        <label class="opt check"><input type="checkbox" value="Wedding"><div class="opt-box"></div><span>Wedding season</span></label>
+        <label class="opt check"><input type="checkbox" value="Year-end"><div class="opt-box"></div><span>Year-end / Christmas / New Year</span></label>
+        <label class="opt check"><input type="checkbox" value="No pattern"><div class="opt-box"></div><span>No clear pattern yet</span></label>
+      </div>
+      <textarea placeholder="Any other seasonal notes..." style="margin-top:8px; min-height:60px"></textarea>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Anything else we should know — priorities, concerns, or constraints not covered above?</label>
+      <textarea placeholder="Open space for anything on your mind..." style="min-height:120px"></textarea>
+    </div>
+  </div>
+
+  <div class="submit-zone">
+    <p>Your responses are confidential and will only be used to inform the project scope and strategy.</p>
+    <button class="btn-submit" onclick="handleSubmit()">Submit Responses</button>
+  </div>
+
+</div>
+
+<div class="toast" id="toast">Responses recorded. Thank you.</div>
+
+<script>
+  function updateSlider(el, valId) {
+    const b2b = el.value;
+    const dtc = 100 - b2b;
+    document.getElementById(valId).textContent = `B2B ${b2b}% · DTC ${dtc}%`;
+    updateProgress();
+  }
+
+  // Radio opt styling
+  document.querySelectorAll('.opt.radio').forEach(label => {
+    label.addEventListener('click', () => {
+      const name = label.querySelector('input').name;
+      document.querySelectorAll(`.opt.radio input[name="${name}"]`).forEach(inp => {
+        inp.closest('.opt').classList.remove('selected');
+      });
+      label.classList.add('selected');
+      updateProgress();
+    });
+  });
+
+  // Checkbox opt styling
+  document.querySelectorAll('.opt.check').forEach(label => {
+    label.addEventListener('click', () => {
+      label.classList.toggle('selected');
+      updateProgress();
+    });
+  });
+
+  // Track inputs
+  document.querySelectorAll('textarea, input[type="text"], input[type="number"], select').forEach(el => {
+    el.addEventListener('input', updateProgress);
+    el.addEventListener('change', updateProgress);
+  });
+
+  function updateProgress() {
+    const total = 35;
+    let answered = 0;
+
+    // Radios (count unique names answered)
+    const radioNames = new Set();
+    document.querySelectorAll('input[type="radio"]:checked').forEach(r => radioNames.add(r.name));
+    answered += radioNames.size;
+
+    // Checkboxes (count sections with at least one checked)
+    const checkGroups = {};
+    document.querySelectorAll('input[type="checkbox"]').forEach(c => {
+      const group = c.closest('.options');
+      if (!checkGroups[group]) checkGroups[group] = false;
+      if (c.checked) checkGroups[group] = true;
+    });
+    Object.values(checkGroups).forEach(v => { if (v) answered++; });
+
+    // Textareas with content
+    document.querySelectorAll('textarea').forEach(t => { if (t.value.trim()) answered++; });
+
+    // Selects
+    document.querySelectorAll('select').forEach(s => { if (s.value) answered++; });
+
+    // Slider (always counts as answered)
+    answered++;
+
+    const pct = Math.min(100, Math.round((answered / total) * 100));
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = `${Math.min(answered, total)} / ${total}`;
+  }
+
+  async function handleSubmit() {
+    const btn = document.querySelector('.btn-submit');
+    const toast = document.getElementById('toast');
+    const data = {};
+
+    // Slider
+    const slider = document.getElementById('b2bSlider');
+    data['Revenue Split'] = `B2B ${slider.value}% / DTC ${100 - slider.value}%`;
+
+    // Radios
+    document.querySelectorAll('input[type="radio"]:checked').forEach(r => {
+      data[r.name] = r.value;
+    });
+
+    // Checkboxes - group by field
+    document.querySelectorAll('.field').forEach(field => {
+      const checks = field.querySelectorAll('input[type="checkbox"]:checked');
+      if (!checks.length) return;
+      const labelEl = field.querySelector('.field-label');
+      const key = (labelEl ? labelEl.childNodes[0].textContent.trim().slice(0, 70) : 'Checkboxes');
+      data[key] = Array.from(checks).map(c => c.value).join(', ');
+    });
+
+    // Textareas
+    document.querySelectorAll('.field').forEach(field => {
+      const ta = field.querySelector('textarea');
+      if (!ta || !ta.value.trim()) return;
+      const labelEl = field.querySelector('.field-label');
+      const key = (labelEl ? labelEl.childNodes[0].textContent.trim().slice(0, 70) : 'Notes') + ' (open)';
+      data[key] = ta.value.trim();
+    });
+
+    // Text inputs
+    document.querySelectorAll('.field').forEach(field => {
+      const inp = field.querySelector('input[type="text"]');
+      if (!inp || !inp.value.trim()) return;
+      const labelEl = field.querySelector('.field-label');
+      const key = (labelEl ? labelEl.childNodes[0].textContent.trim().slice(0, 70) : 'Other') + ' (other)';
+      data[key] = inp.value.trim();
+    });
+
+    // Selects
+    document.querySelectorAll('select').forEach(sel => {
+      if (!sel.value) return;
+      const labelEl = sel.closest('.field')?.querySelector('.field-label');
+      const key = labelEl ? labelEl.childNodes[0].textContent.trim().slice(0, 70) : 'Select';
+      data[key] = sel.value;
+    });
+
+    btn.textContent = 'Submitting...';
+    btn.disabled = true;
+
+    try {
+      const res = await fetch('https://formspree.io/f/xqenjbnn', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      if (res.ok) {
+        toast.textContent = 'Submitted. Thank you.';
+        toast.style.background = '#7a5c3a';
+        btn.textContent = 'Submitted';
+      } else {
+        throw new Error();
+      }
+    } catch {
+      toast.textContent = 'Submission failed. Please try again.';
+      toast.style.background = '#8b3a3a';
+      btn.textContent = 'Submit Responses';
+      btn.disabled = false;
+    }
+
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 4000);
+  }
+
+  updateProgress();
+</script>
+</body>
+</html>
